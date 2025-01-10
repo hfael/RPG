@@ -92,6 +92,7 @@ class RPG():
             self.nPrint("Le nom d'utilisateur doit être alphabétique et contenir entre 2 et 12 caractères.")
 
     def choose_village(self, player_data):
+        self.display_xp_bar(player_data)
         self.nPrint("Tu peux choisir parmi les villages suivants :")
         len_villages = len(villages)
         for i, village in enumerate(villages, start=1):
@@ -131,7 +132,6 @@ class RPG():
         potions = player_data["potions"]
 
         while player_hp > 0 and monster["hp"] > 0:
-            self.display_xp_bar(player_data)
             self.nPrint(f"PV du joueur: {player_hp}, PV du monstre: {monster['hp']}")
             self.nPrint("Que veux-tu faire ?")
             self.nPrint("1. Attaquer")
@@ -173,6 +173,7 @@ class RPG():
             if player_data["xp"] >= player_data["level"] * 50:
                 self.level_up(player_data)
             item = random.choice(list(items.values()))
+            self.display_xp_bar(player_data)
             self.nPrint(f"Tu obtiens un {item['name']} qui augmente ta statistique.")
             self.update_stats(player_data, item['effect'], item['name'])
             self.explore_village(player_data, village)
@@ -234,7 +235,7 @@ class RPG():
         xp_percentage = (player_data["xp"] / (player_data["level"] * 50)) * 100
         filled_bars = int(xp_percentage // 10)
         bar = "[" + "-" * filled_bars + "|" + "-" * (10 - filled_bars - 1) + "]"
-        self.nPrint(f"XP: {bar} ({int(xp_percentage)}%)")
+        print(f"XP: {bar} ({int(xp_percentage)}%)")
 
     def nPrint(self, text):
         for char in text:
